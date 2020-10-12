@@ -2,12 +2,16 @@ import java.util.Scanner;
 
 public class Cypher {
 
+    //test!
     public Cypher (){
         // Constructor
     }
 
-    private String encypher(String text) {
+    private String encypher(String text){
+
+
         return "Implementation coming soon :)";
+
     }
 
     public static void main(String[] arg) {
