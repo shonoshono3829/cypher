@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Cypher {
 
-    //test!
+    //test
     public Cypher (){
         // Constructor
     }
