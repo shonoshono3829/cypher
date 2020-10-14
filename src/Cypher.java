@@ -37,7 +37,7 @@ public class Cypher {
                 result.append(letter);
             }
         }
-        return (result.toString());
+        return result.toString();
     }
 
     private String encypherVignere(String text, String key) {
@@ -57,6 +57,10 @@ public class Cypher {
         return result.toString();
     }
 
+    private String decypher(String text) {
+        return "ABC";
+    }
+
     private Map<Character, Character> getCaesarMap(int key) {
         Map<Character, Character> charMap = new HashMap<>();
         for (int i = 0; i < 26; i++) {
@@ -67,25 +71,36 @@ public class Cypher {
 
     public static void main(String[] arg) {
         Cypher cypher = new Cypher();
-        Scanner scanner = new Scanner(System.in);
-
+        Scanner inputTextScanner = new Scanner(System.in);
         System.out.println("Enter the text you want to encode:");
-        String text = scanner.nextLine();
-        System.out.println("Enter the the number of the cipher you want to use: \n" +
-                "1) Caesar: shifts alphabet by specified key (int)" +
-                "\n2) Vignere square: shifts every letter by a different Caesar-shifted alphabet" +
-                "according to the specified key (string)");
-        String type = scanner.nextLine();
-        type = type.trim().toLowerCase();
-        if (type.equals("1")) {
-            System.out.println("Enter a number you want to use as a key for encoding: ");
-            int key = scanner.nextInt();
-            System.out.println(cypher.encypher(text, key));
+        String text = inputTextScanner.nextLine();
+
+        Scanner optionScanner = new Scanner(System.in);
+        System.out.println("To encypher the entered text, enter E. To decypher the entered text, enter D");
+        String option = optionScanner.nextLine();
+
+        if (option.equals("E")) {
+            System.out.println("Enter the the number of the cipher you want to use: \n" +
+                    "1) Caesar: shifts alphabet by specified key (int)" +
+                    "\n2) Vignere square: shifts every letter by a different Caesar-shifted alphabet" +
+                    "according to the specified key (string)");
+            String type = inputTextScanner.nextLine();
+            type = type.trim().toLowerCase();
+            if (type.equals("1")) {
+                System.out.println("Enter a number you want to use as a key for encoding: ");
+                int key = inputTextScanner.nextInt();
+                System.out.println(cypher.encypher(text, key));
+            }
+            if (type.equals(2)) {
+                System.out.println("Enter a word to use as a key for encoding: ");
+                String key = inputTextScanner.nextLine();
+                System.out.println(cypher.encypherVignere(text, key));
+            }
         }
-        if (type.equals(2)) {
-            System.out.println("Enter a word to use as a key for encoding: ");
-            String key = scanner.nextLine();
-            System.out.println(cypher.encypherVignere(text, key));
+        else if (option.equals("D")){
+            cypher.decypher(text);
         }
+        else
+            System.out.println("Entry invalid");
     }
 }
