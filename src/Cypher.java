@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -69,6 +70,22 @@ public class Cypher {
         return charMap;
     }
 
+    private void printFrequencyAnalysis (String input){
+        input = input.toLowerCase().trim();
+        char[] text = input.toCharArray();
+        int [] frequencies = new int [26];
+        for(char letter : text){
+            if(letter >= 'a' && letter <= 'z') {
+                //increments the frequency for that letter
+                frequencies[(letter - 'a')] += 1;
+            }
+        }
+        for(int i = 0; i < 26; i ++){
+            System.out.println(alphabet[i] + " occurred " + frequencies[i] +
+                    " times");
+        }
+    }
+
     public static void main(String[] arg) {
         Cypher cypher = new Cypher();
         Scanner inputTextScanner = new Scanner(System.in);
@@ -76,7 +93,8 @@ public class Cypher {
         String text = inputTextScanner.nextLine();
 
         Scanner optionScanner = new Scanner(System.in);
-        System.out.println("To encypher the entered text, enter E. To decypher the entered text, enter D");
+        System.out.println("To encypher the entered text, enter E. To decypher the entered text, enter D." +
+                "To run a frequency analysis on the entered text, enter F.");
         String option = optionScanner.nextLine();
 
         if (option.equals("E")) {
@@ -97,8 +115,10 @@ public class Cypher {
                 System.out.println(cypher.encypherVignere(text, key));
             }
         }
-        else if (option.equals("D")){
+        if (option.equals("D")){
             cypher.decypher(text);
+        } else if(option.equals("F")){
+            cypher.printFrequencyAnalysis(text);
         }
         else
             System.out.println("Entry invalid");
