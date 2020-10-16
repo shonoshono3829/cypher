@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -73,49 +72,66 @@ public class Cypher {
     private void printFrequencyAnalysis (String input){
         input = input.toLowerCase().trim();
         char[] text = input.toCharArray();
-        int [] frequencies = new int [26];
+        int size = 0;
+        Map <Character, Integer> frequencies = new HashMap<>();
         for(char letter : text){
             if(letter >= 'a' && letter <= 'z') {
+                size++;
                 //increments the frequency for that letter
-                frequencies[(letter - 'a')] += 1;
+                if(frequencies.containsKey(letter)){
+                    frequencies.put(letter, frequencies.get(letter) + 1);
+                } else{
+                    frequencies.put(letter, 1);
+                }
             }
         }
-        for(int i = 0; i < 26; i ++){
-            System.out.println(alphabet[i] + " occurred " + frequencies[i] +
-                    " times");
+        int total = 0;
+        for(char letter : alphabet){
+            if(frequencies.containsKey(letter)){
+                double freq = frequencies.get(letter);
+                double percent = (freq/size) * 100.0;
+                //prints the frequency for the letter as a percentage
+                System.out.println(letter + ": " + percent + "%");
+                //later might add a suggestion based on a comparison with English relative frequencies
+                total += frequencies.get(letter);
+            } else{
+                System.out.println(letter + ": " + "0.0%");
+            }
         }
+        System.out.println(total);
     }
 
     public static void main(String[] arg) {
         Cypher cypher = new Cypher();
         Scanner inputTextScanner = new Scanner(System.in);
         System.out.println("Enter the text you want to encode:");
-        String text = inputTextScanner.nextLine();
+        String text = inputTextScanner.next();
 
         Scanner optionScanner = new Scanner(System.in);
-        System.out.println("To encypher the entered text, enter E. To decypher the entered text, enter D." +
+        System.out.println("\nTo encypher the entered text, enter E. To decypher the entered text, enter D." +
                 "To run a frequency analysis on the entered text, enter F.");
-        String option = optionScanner.nextLine();
+        String option = optionScanner.next();
 
         if (option.equals("E")) {
             System.out.println("Enter the the number of the cipher you want to use: \n" +
                     "1) Caesar: shifts alphabet by specified key (int)" +
                     "\n2) Vignere square: shifts every letter by a different Caesar-shifted alphabet" +
-                    "according to the specified key (string)");
-            String type = inputTextScanner.nextLine();
+                    " according to the specified key (string)");
+
+            String type = inputTextScanner.next();
             type = type.trim().toLowerCase();
             if (type.equals("1")) {
                 System.out.println("Enter a number you want to use as a key for encoding: ");
                 int key = inputTextScanner.nextInt();
                 System.out.println(cypher.encypher(text, key));
             }
-            if (type.equals(2)) {
+            if (type.equals("2")) {
                 System.out.println("Enter a word to use as a key for encoding: ");
-                String key = inputTextScanner.nextLine();
+                String key = inputTextScanner.next();
                 System.out.println(cypher.encypherVignere(text, key));
             }
         }
-        if (option.equals("D")){
+        else if (option.equals("D")){
             cypher.decypher(text);
         } else if(option.equals("F")){
             cypher.printFrequencyAnalysis(text);
