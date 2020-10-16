@@ -105,12 +105,12 @@ public class Cypher {
         Cypher cypher = new Cypher();
         Scanner inputTextScanner = new Scanner(System.in);
         System.out.println("Enter the text you want to encode:");
-        String text = inputTextScanner.next();
+        String text = inputTextScanner.nextLine();
 
         Scanner optionScanner = new Scanner(System.in);
         System.out.println("\nTo encypher the entered text, enter E. To decypher the entered text, enter D." +
                 "To run a frequency analysis on the entered text, enter F.");
-        String option = optionScanner.next();
+        String option = optionScanner.nextLine();
 
         if (option.equals("E")) {
             System.out.println("Enter the the number of the cipher you want to use: \n" +
@@ -118,7 +118,7 @@ public class Cypher {
                     "\n2) Vignere square: shifts every letter by a different Caesar-shifted alphabet" +
                     " according to the specified key (string)");
 
-            String type = inputTextScanner.next();
+            String type = inputTextScanner.nextLine();
             type = type.trim().toLowerCase();
             if (type.equals("1")) {
                 System.out.println("Enter a number you want to use as a key for encoding: ");
@@ -127,7 +127,7 @@ public class Cypher {
             }
             if (type.equals("2")) {
                 System.out.println("Enter a word to use as a key for encoding: ");
-                String key = inputTextScanner.next();
+                String key = inputTextScanner.nextLine();
                 System.out.println(cypher.encypherVignere(text, key));
             }
         }
