@@ -24,7 +24,7 @@ public class Cypher {
         }
     }
 
-    private String encypher(String text, int key) {
+    private String encipherCaesar(String text, int key) {
         text = text.trim().toLowerCase();
         char[] chars = text.toCharArray();
         key = key % 26;
@@ -40,7 +40,7 @@ public class Cypher {
         return result.toString();
     }
 
-    private String encypherVignere(String text, String key) {
+    private String encipherVignere(String text, String key) {
         text = text.trim().toLowerCase();
         char[] textChars = text.toCharArray();
         key = key.trim().toLowerCase();
@@ -57,7 +57,22 @@ public class Cypher {
         return result.toString();
     }
 
-    private String decypherCaesar(String text, int key) {       // Works! But can be way more simple.
+    private String decipher(String text, String key) {
+        String type = key.substring(0,1);
+        type = type.trim().toLowerCase();
+        if (type.equals("1")) {
+            int caesarKey = Integer.parseInt(key.substring(1));
+            return decipherCaesar(text, caesarKey);
+        }
+        else if (type.equals("2")) {
+            String vignereKey = key.substring(1);
+            return decipherVignere(text, vignereKey);
+        }
+        else
+            return null;
+    }
+
+    private String decipherCaesar(String text, int key) {       // Works! But can be way more simple.
         text = text.trim().toLowerCase();
         char[] chars = text.toCharArray();
         key = 26 - key % 26;
@@ -73,7 +88,7 @@ public class Cypher {
         return result.toString();
     }
 
-    private String decypherVignere(String text, String key) {
+    private String decipherVignere(String text, String key) {
         //TODO: implement decypherVignere
         text = text.trim().toLowerCase();
         char[] textChars = text.toCharArray();
@@ -153,32 +168,21 @@ public class Cypher {
             if (type.equals("1")) {
                 System.out.println("Enter a number you want to use as a key for encoding: ");
                 int key = inputTextScanner.nextInt();
-                System.out.println(cypher.encypher(text, key));
+                System.out.println(cypher.encipherCaesar(text, key));
+                System.out.println("Key for decrypting: " + "1" + key);
             }
             if (type.equals("2")) {
                 System.out.println("Enter a word to use as a key for encoding: ");
                 String key = inputTextScanner.nextLine();
-                System.out.println(cypher.encypherVignere(text, key));
+                System.out.println(cypher.encipherVignere(text, key));
+                System.out.println("Key for decrypting: " + "2" + key);
             }
         }
 
-        else if (option.equals("D")){
-            System.out.println("Enter the the number of the decipher method you want to use: \n" +
-                    "1) Caesar: shifts alphabet by specified key (int)" +
-                    "\n2) Vignere square: shifts every letter by a different Caesar-shifted alphabet" +
-                    " according to the specified key (string)");
-            String type = inputTextScanner.nextLine();
-            type = type.trim().toLowerCase();
-            if (type.equals("1")) {
-                System.out.println("Enter the number of the key for the input text: ");
-                int key = inputTextScanner.nextInt();
-                System.out.println(cypher.decypherCaesar(text, key));
-            }
-            if (type.equals("2")) {
-                System.out.println("Enter the word of the key for the input text: ");
-                String key = inputTextScanner.nextLine();
-                System.out.println(cypher.decypherVignere(text, key));
-            }
+        else if (option.equals("D")) {
+            System.out.println("Enter the key to decipher the input text: ");
+            String key = inputTextScanner.nextLine();
+            System.out.println(cypher.decipher(text, key));
         }
 
         else if(option.equals("F")){
