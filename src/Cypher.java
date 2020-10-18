@@ -24,6 +24,13 @@ public class Cypher {
         }
     }
 
+    /**
+     * Enciphers the inputted text with a Caesar cipher shifted by the inputted key
+     * @param text to be enciphered
+     * @param key number of spaces to shift the alphabet
+     * @return enciphered text
+     */
+
     private String encipherCaesar(String text, int key) {
         text = text.trim().toLowerCase();
         char[] chars = text.toCharArray();
@@ -40,6 +47,13 @@ public class Cypher {
         return result.toString();
     }
 
+    /**
+     * Enciphers the inputted text using a Vignere square and a given key by accessing the shifted alphabet
+     * beginning with each letter of the key.
+     * @param text the text to be enciphered
+     * @param key the keyword used to access multiple shifted alphabets
+     * @return the enciphered text
+     */
     private String encipherVignere(String text, String key) {
         text = text.trim().toLowerCase();
         char[] textChars = text.toCharArray();
@@ -57,6 +71,12 @@ public class Cypher {
         return result.toString();
     }
 
+    /**
+     * Takes in a key and text and performs the appropriate decipher method
+     * @param text to be deciphered
+     * @param key to use with deciphering
+     * @return deciphered text
+     */
     private String decipher(String text, String key) {
         String type = key.substring(0,1);
         type = type.trim().toLowerCase();
@@ -72,6 +92,9 @@ public class Cypher {
             return null;
     }
 
+    /**
+     * Deciphers the given text using a Caesar cipher and key
+     */
     private String decipherCaesar(String text, int key) {       // Works! But can be way more simple.
         text = text.trim().toLowerCase();
         char[] chars = text.toCharArray();
@@ -88,17 +111,23 @@ public class Cypher {
         return result.toString();
     }
 
+    /**
+     * Deciphers a code using a Vignere square and a given key.
+     */
     private String decipherVignere(String text, String key) {
-        //TODO: implement decypherVignere
         text = text.trim().toLowerCase();
         char[] textChars = text.toCharArray();
         key = key.trim().toLowerCase();
         char[] keyChars = key.toCharArray();
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < textChars.length; i++) {
+            //if character is a letter, not a space or punctuation
             if (textChars[i] >= 'a' && textChars[i] <= 'z') {
+                //records the shift in the alphabet specified by the letter in the key
+                int shift = 26 -  (keyChars[i% keyChars.length] - 'a');
+                //adds the deciphered character by getting the shifted character
                 result.append(vignereSquare.get(keyChars[i % keyChars.length])
-                        .get(textChars[i]));
+                        .get(alphabet[((textChars[i] - 'a' ) + (shift * 2)) % 26]));
             } else {
                 result.append(textChars[i]);
             }
@@ -106,6 +135,9 @@ public class Cypher {
         return result.toString();
     }
 
+    /**
+     * Returns a map of the alphabet where each character points to the character shifted by the key
+     */
     private Map<Character, Character> getCaesarMap(int key) {
         Map<Character, Character> charMap = new HashMap<>();
         for (int i = 0; i < 26; i++) {
@@ -113,6 +145,10 @@ public class Cypher {
         }
         return charMap;
     }
+
+    /**
+     * Calculates and prints the frequency for each letter in a given text to aid in decoding a Caesar cipher
+     */
 
     private void printFrequencyAnalysis (String input){
         input = input.toLowerCase().trim();
@@ -149,7 +185,7 @@ public class Cypher {
     public static void main(String[] arg) {
         Cypher cypher = new Cypher();
         Scanner inputTextScanner = new Scanner(System.in);
-        System.out.println("Enter the text you want to encode:");
+        System.out.println("Enter the text you want to process:");
         String text = inputTextScanner.nextLine();
 
         Scanner optionScanner = new Scanner(System.in);
