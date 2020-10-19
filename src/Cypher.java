@@ -4,22 +4,23 @@ import java.util.Scanner;
 
 public class Cypher {
 
-    char[] alphabet;
-    Map<Character, Map<Character, Character>> vignereSquare;
+    final char[] ALPHABET = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+            'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    final double[] ENGLISH_FREQS = new double[]{8.2, 1.5, 2.8, 4.3, 13, 2.2, 2, 6.1, 7,
+    0.15, 0.77, 4, 2.4, 6.7, 7.5, 1.9, 0.095, 6, 6.3, 9.1, 2.8, 0.98, 2.4, 0.15, 2, 0.074};
+
+    final Map<Character, Map<Character, Character>> VIGNERE_SQUARE;
+
 
     public Cypher() {
-        // initialize reference alphabet
-        alphabet = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
-                'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-
         //initialize vignere square
-        vignereSquare = new HashMap<>();
+        VIGNERE_SQUARE = new HashMap<>();
         for (int i = 0; i < 26; i++) {
             //add each letter of the alphabet and a new map to the wrapper map, then fill the second
             // map with shifted alphabets
-            vignereSquare.put(alphabet[i], new HashMap<>());
+            VIGNERE_SQUARE.put(ALPHABET[i], new HashMap<>());
             for (int j = 0; j < 26; j++) {
-                vignereSquare.get(alphabet[i]).put(alphabet[j], alphabet[(j + i) % 26]);
+                VIGNERE_SQUARE.get(ALPHABET[i]).put(ALPHABET[j], ALPHABET[(j + i) % 26]);
             }
         }
     }
@@ -62,7 +63,7 @@ public class Cypher {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < textChars.length; i++) {
             if (textChars[i] >= 'a' && textChars[i] <= 'z') {
-                result.append(vignereSquare.get(keyChars[i % keyChars.length])
+                result.append(VIGNERE_SQUARE.get(keyChars[i % keyChars.length])
                         .get(textChars[i]));
             } else {
                 result.append(textChars[i]);
@@ -126,8 +127,8 @@ public class Cypher {
                 //records the shift in the alphabet specified by the letter in the key
                 int shift = 26 -  (keyChars[i% keyChars.length] - 'a');
                 //adds the deciphered character by getting the shifted character
-                result.append(vignereSquare.get(keyChars[i % keyChars.length])
-                        .get(alphabet[((textChars[i] - 'a' ) + (shift * 2)) % 26]));
+                result.append(VIGNERE_SQUARE.get(keyChars[i % keyChars.length])
+                        .get(ALPHABET[((textChars[i] - 'a' ) + (shift * 2)) % 26]));
             } else {
                 result.append(textChars[i]);
             }
@@ -141,7 +142,7 @@ public class Cypher {
     private Map<Character, Character> getCaesarMap(int key) {
         Map<Character, Character> charMap = new HashMap<>();
         for (int i = 0; i < 26; i++) {
-            charMap.put(alphabet[i], alphabet[(i + key) % 26]);
+            charMap.put(ALPHABET[i], ALPHABET[(i + key) % 26]);
         }
         return charMap;
     }
@@ -166,20 +167,19 @@ public class Cypher {
                 }
             }
         }
-        int total = 0;
-        for(char letter : alphabet){
+        System.out.println("The frequency of each letter in the given text is printed below. \n The relative" +
+                "frequencies of letters in the English language are also printed for comparison. ");
+        for(char letter : ALPHABET){
             if(frequencies.containsKey(letter)){
                 double freq = frequencies.get(letter);
                 double percent = (freq/size) * 100.0;
                 //prints the frequency for the letter as a percentage
-                System.out.println(letter + ": " + percent + "%");
-                //later might add a suggestion based on a comparison with English relative frequencies
-                total += frequencies.get(letter);
+                System.out.println(letter + ": " + percent + "%" + "     " + "English frequency: " +
+                        ENGLISH_FREQS[letter-'a'] + "%");
             } else{
                 System.out.println(letter + ": " + "0.0%");
             }
         }
-        System.out.println(total);
     }
 
     public static void main(String[] arg) {
